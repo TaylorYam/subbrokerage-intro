@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2C2018">
+<meta name="format-detection" content="telephone=no">
+<title>什麼是複委託？ — 從零認識美股投資</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDEAE0;
+    --bg-soft:#E5E1D4;
+    --paper:#FFFFFF;
+    --ink:#2C2018;
+    --ink-2:#4A3A2C;
+    --ink-soft:#6B5438;
+    --muted:#8A7A66;
+    --line:#E0DBCF;
+    --line-2:#D4CCB8;
+    --accent:#B8763A;
+    --accent-deep:#7A4818;
+    --accent-soft:#F4E4D0;
+    --cool:#4A6B82;
+    --cool-soft:#E3EAF1;
+    --chip:#F7F3E9;
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);}
+  body{
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei","微軟正黑體",system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    line-height:1.8;
+    font-size:15.5px;
+    letter-spacing:.01em;
+  }
+  strong{font-weight:700;}
+
+  .wrap{max-width:480px;margin:0 auto;padding:0 18px 56px;}
+  @media (min-width:760px){
+    .wrap{max-width:720px;padding:0 28px 80px;}
+    body{font-size:16px;}
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    margin:0 -18px 28px;
+    padding:44px 22px 38px;
+    background:
+      radial-gradient(120% 80% at 80% 0%, rgba(184,118,58,.28), transparent 60%),
+      linear-gradient(160deg,#2C2018 0%,#4A3624 55%,#7A6448 100%);
+    color:#F5EFE2;
+    position:relative;
+    overflow:hidden;
+  }
+  @media (min-width:760px){
+    .hero{margin:0 -28px 36px;padding:64px 36px 56px;border-radius:0 0 24px 24px;}
+  }
+  .hero::after{
+    content:"";
+    position:absolute;inset:auto 0 0 0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(245,239,226,.35),transparent);
+  }
+  .hero .badge{
+    display:inline-block;
+    font-size:12px;letter-spacing:.18em;
+    padding:6px 12px;
+    border:1px solid rgba(245,239,226,.4);
+    border-radius:999px;
+    color:#E8DCC4;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    margin:0 0 10px;
+    font-size:30px;line-height:1.25;font-weight:900;letter-spacing:.02em;
+  }
+  @media (min-width:760px){.hero h1{font-size:38px;}}
+  .hero .sub{
+    margin:0;
+    color:#D8C8AA;
+    font-size:14.5px;line-height:1.7;
+  }
+  .hero .meta{
+    margin-top:20px;
+    display:flex;gap:10px;flex-wrap:wrap;
+    font-size:12px;color:#C9B89A;
+  }
+  .hero .meta span{
+    padding:4px 10px;
+    background:rgba(255,255,255,.06);
+    border-radius:6px;
+  }
+
+  /* ===== Intro ===== */
+  .intro{
+    background:var(--paper);
+    border-left:4px solid var(--accent-deep);
+    border-radius:4px 12px 12px 4px;
+    padding:20px 22px;
+    margin-bottom:36px;
+    box-shadow:0 1px 0 var(--line);
+  }
+  .intro p{margin:0;color:var(--ink-2);font-size:15px;line-height:1.85;}
+  .intro strong{color:var(--ink);}
+
+  /* ===== Section ===== */
+  section{margin-bottom:46px;}
+  .sec-num{
+    display:inline-block;
+    font-size:12px;letter-spacing:.22em;
+    color:var(--accent-deep);
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .sec-title{
+    margin:0 0 22px;
+    font-size:24px;line-height:1.4;font-weight:700;
+    color:var(--ink);
+    letter-spacing:.005em;
+  }
+  @media (min-width:760px){.sec-title{font-size:28px;}}
+
+  .row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+    align-items:start;
+  }
+  @media (min-width:760px){
+    .row{grid-template-columns:1fr 1fr;gap:26px;}
+    .row.flip .figure{order:2;}
+  }
+
+  /* ===== Figure ===== */
+  .figure{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 16px 14px;
+    position:relative;
+  }
+  .figure svg{display:block;width:100%;height:auto;}
+  .figure .cap{
+    margin-top:10px;
+    font-size:12px;color:var(--muted);
+    text-align:center;
+    letter-spacing:.04em;
+  }
+
+  /* ===== Card (single layer) ===== */
+  .card{
+    background:var(--paper);
+    border-radius:12px;
+    padding:18px 20px 20px;
+    border:1px solid var(--line);
+    border-left:4px solid var(--accent);
+    background:linear-gradient(180deg,#FFFDF8 0%,#FFFFFF 60%);
+  }
+  .card p{margin:0 0 12px;color:var(--ink-2);}
+  .card p:last-child{margin-bottom:0;}
+  .card p strong{color:var(--ink);}
+  .card ul{margin:8px 0 4px;padding:0;list-style:none;}
+  .card ul li{
+    position:relative;
+    padding:7px 0 7px 22px;
+    color:var(--ink-2);
+    font-size:14.5px;
+    line-height:1.7;
+  }
+  .card ul li::before{
+    content:"";
+    position:absolute;left:4px;top:15px;
+    width:8px;height:2px;
+    background:var(--accent);
+    border-radius:2px;
+  }
+  .card ul li strong{color:var(--ink);}
+
+  /* sub-section heads inside card (used in Ch.03) */
+  .card h4{
+    margin:14px 0 4px;
+    font-size:14px;
+    font-weight:700;
+    color:var(--accent-deep);
+    letter-spacing:.02em;
+  }
+  .card h4:first-child{margin-top:0;}
+
+  /* pull-quote */
+  .pq{
+    margin:14px 0 4px;
+    padding:10px 14px;
+    background:var(--chip);
+    border-radius:8px;
+    font-size:14px;
+    color:var(--ink);
+    border-left:3px solid var(--accent);
+  }
+
+  /* ===== Footer ===== */
+  footer{
+    margin-top:56px;
+    padding-top:24px;
+    border-top:1px solid var(--line-2);
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.8;
+  }
+  footer p{margin:4px 0;}
+
+  ::selection{background:var(--accent);color:#fff;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <span class="badge">投資觀念 · 教學</span>
+    <h1>什麼是複委託？<br>從零認識美股投資</h1>
+    <p class="sub">不用開海外帳戶、不用面對英文介面，<br>在台灣的券商就能買蘋果、微軟、Google。</p>
+    <div class="meta">
+      <span>共 4 個章節</span>
+      <span>白話入門</span>
+      <span>約 6 分鐘讀完</span>
+    </div>
+  </header>
+
+  <div class="intro">
+    <p>很多人想買美股，但一聽到「要開海外戶」「要匯款到國外」就退縮。其實在台灣，<strong>有一個更簡單的方法</strong>——它叫做複委託。</p>
+  </div>
+
+  <!-- ============ SECTION 1 ============ -->
+  <section>
+    <span class="sec-num">CHAPTER 01</span>
+    <h2 class="sec-title">什麼是複委託？</h2>
+
+    <div class="row">
+      <div class="figure">
+        <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" aria-label="複委託流程示意">
+          <defs>
+            <linearGradient id="bd1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#F4E4D0"/>
+              <stop offset="1" stop-color="#B8763A"/>
+            </linearGradient>
+            <linearGradient id="bd2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#E3EAF1"/>
+              <stop offset="1" stop-color="#4A6B82"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Person -->
+          <g transform="translate(28,80)">
+            <circle cx="22" cy="14" r="12" fill="#7A4818"/>
+            <path d="M2,52 Q2,28 22,28 Q42,28 42,52 Z" fill="#7A4818"/>
+            <text x="22" y="74" text-anchor="middle" fill="#2C2018" font-size="11" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">你</text>
+          </g>
+
+          <!-- Arrow 1 -->
+          <g>
+            <line x1="80" y1="100" x2="135" y2="100" stroke="#B8763A" stroke-width="2.5" stroke-dasharray="4 4"/>
+            <path d="M135,100 l-8,-4 l0,8 z" fill="#B8763A"/>
+            <text x="107" y="92" text-anchor="middle" fill="#7A4818" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">下單</text>
+          </g>
+
+          <!-- TW Broker -->
+          <g transform="translate(140,68)">
+            <rect x="0" y="0" width="80" height="76" rx="8" fill="url(#bd1)" stroke="#7A4818" stroke-width="1.5"/>
+            <rect x="10" y="14" width="12" height="14" fill="#FFFDF8" rx="1"/>
+            <rect x="28" y="14" width="12" height="14" fill="#FFFDF8" rx="1"/>
+            <rect x="46" y="14" width="12" height="14" fill="#FFFDF8" rx="1"/>
+            <rect x="10" y="34" width="12" height="14" fill="#FFFDF8" rx="1"/>
+            <rect x="28" y="34" width="12" height="14" fill="#FFFDF8" rx="1"/>
+            <rect x="46" y="34" width="12" height="14" fill="#FFFDF8" rx="1"/>
+            <rect x="32" y="56" width="16" height="20" fill="#3E2410"/>
+            <text x="40" y="98" text-anchor="middle" fill="#2C2018" font-size="11" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">台灣券商</text>
+          </g>
+
+          <!-- Arrow 2 -->
+          <g>
+            <line x1="225" y1="100" x2="280" y2="100" stroke="#4A6B82" stroke-width="2.5" stroke-dasharray="4 4"/>
+            <path d="M280,100 l-8,-4 l0,8 z" fill="#4A6B82"/>
+            <text x="252" y="92" text-anchor="middle" fill="#243B4F" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">下單</text>
+          </g>
+
+          <!-- US Market -->
+          <g transform="translate(282,60)">
+            <rect x="0" y="8" width="64" height="76" rx="6" fill="url(#bd2)" stroke="#243B4F" stroke-width="1.5"/>
+            <polygon points="0,8 32,-8 64,8" fill="#243B4F"/>
+            <rect x="8" y="22" width="10" height="12" fill="#FFFDF8"/>
+            <rect x="22" y="22" width="10" height="12" fill="#FFFDF8"/>
+            <rect x="36" y="22" width="10" height="12" fill="#FFFDF8"/>
+            <rect x="50" y="22" width="6" height="12" fill="#FFFDF8"/>
+            <rect x="8" y="40" width="10" height="12" fill="#FFFDF8"/>
+            <rect x="22" y="40" width="10" height="12" fill="#FFFDF8"/>
+            <rect x="36" y="40" width="10" height="12" fill="#FFFDF8"/>
+            <rect x="50" y="40" width="6" height="12" fill="#FFFDF8"/>
+            <rect x="26" y="60" width="12" height="24" fill="#3E2410"/>
+            <text x="32" y="106" text-anchor="middle" fill="#2C2018" font-size="11" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">美國股市</text>
+          </g>
+
+          <!-- Bottom note -->
+          <text x="180" y="200" text-anchor="middle" fill="#8A7A66" font-size="11" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">台灣券商當你的代表，幫你買美股</text>
+        </svg>
+        <div class="cap">圖 1 · 複委託的運作流程</div>
+      </div>
+
+      <div class="card">
+        <p>講白一點，複委託就是<strong>透過台灣的券商，幫你下單買美國股票</strong>。</p>
+        <p>你不用去美國開戶、也不用把錢匯到海外平台。整個過程就跟你買台積電、聯發科一樣——一樣的台灣券商、一樣的中文介面、一樣的客服窗口。唯一的差別是，你買的標的換成了蘋果、微軟、Google、Nvidia。</p>
+        <p>「複委託」這三個字的意思是：<strong>你委託台灣的券商，台灣券商再委託它在美國的合作券商</strong>幫你下單。中間多了一層代理，所以叫「複」委託。</p>
+        <div class="pq">一句話：在台灣，用買台股的方式買美股。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 ============ -->
+  <section>
+    <span class="sec-num">CHAPTER 02</span>
+    <h2 class="sec-title">跟台股有什麼不一樣？</h2>
+
+    <div class="row flip">
+      <div class="figure">
+        <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" aria-label="台股與美股的差異">
+          <defs>
+            <linearGradient id="tankWater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#D4E1EC"/>
+              <stop offset="1" stop-color="#8FA8BD"/>
+            </linearGradient>
+            <linearGradient id="tankGlass" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/>
+              <stop offset=".5" stop-color="#FFFFFF" stop-opacity="0"/>
+              <stop offset="1" stop-color="#FFFFFF" stop-opacity=".25"/>
+            </linearGradient>
+            <linearGradient id="oceanWater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#E8C9A0"/>
+              <stop offset=".5" stop-color="#C28A4A"/>
+              <stop offset="1" stop-color="#7A4818"/>
+            </linearGradient>
+          </defs>
+
+          <!-- ============ LEFT: 魚缸 ============ -->
+          <g>
+            <text x="80" y="22" text-anchor="middle" fill="#243B4F" font-size="13" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">台股</text>
+            <text x="80" y="38" text-anchor="middle" fill="#4A6B82" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">像一個魚缸</text>
+
+            <!-- 魚缸底座 -->
+            <rect x="32" y="158" width="96" height="6" rx="1" fill="#3E2410"/>
+            <rect x="38" y="164" width="84" height="4" rx="1" fill="#5A3618"/>
+
+            <!-- 魚缸玻璃外框 -->
+            <rect x="36" y="58" width="88" height="100" rx="3" fill="url(#tankWater)" stroke="#4A6B82" stroke-width="2"/>
+            <!-- 水面波紋線 -->
+            <path d="M38,68 q11,-3 22,0 t22,0 t22,0 t22,0" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity=".7"/>
+            <!-- 玻璃高光 -->
+            <rect x="36" y="58" width="88" height="100" rx="3" fill="url(#tankGlass)"/>
+            <!-- 玻璃左側反光線 -->
+            <line x1="44" y1="68" x2="44" y2="148" stroke="#FFFFFF" stroke-width="1.5" opacity=".5"/>
+
+            <!-- 小魚 (3隻) -->
+            <g fill="#4A6B82">
+              <ellipse cx="60" cy="92" rx="6" ry="3"/>
+              <path d="M54,92 l-4,-3 l0,6 z"/>
+            </g>
+            <g fill="#4A6B82">
+              <ellipse cx="100" cy="105" rx="6" ry="3"/>
+              <path d="M94,105 l-4,-3 l0,6 z"/>
+            </g>
+            <g fill="#4A6B82">
+              <ellipse cx="65" cy="135" rx="6" ry="3"/>
+              <path d="M59,135 l-4,-3 l0,6 z"/>
+            </g>
+
+            <!-- 大魚 (擠在中間) -->
+            <g>
+              <ellipse cx="84" cy="118" rx="14" ry="6" fill="#7A4818"/>
+              <path d="M70,118 l-8,-5 l0,10 z" fill="#7A4818"/>
+              <circle cx="90" cy="116" r="1.5" fill="#FFF"/>
+            </g>
+
+            <!-- 水面被擾動的波紋 (在魚缸內，水面附近) -->
+            <g stroke="#4A6B82" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".7">
+              <path d="M42,76 q4,-4 8,0 t8,0"/>
+              <path d="M62,80 q4,-4 8,0 t8,0"/>
+              <path d="M82,76 q4,-4 8,0 t8,0"/>
+              <path d="M102,80 q4,-4 8,0 t8,0"/>
+            </g>
+
+            <text x="80" y="190" text-anchor="middle" fill="#243B4F" font-size="11" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">大魚一進來</text>
+            <text x="80" y="206" text-anchor="middle" fill="#243B4F" font-size="11" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">水就翻了</text>
+          </g>
+
+          <!-- ============ RIGHT: 大海 ============ -->
+          <g>
+            <text x="280" y="22" text-anchor="middle" fill="#7A4818" font-size="13" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">美股</text>
+            <text x="280" y="38" text-anchor="middle" fill="#B8763A" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">像一片大海</text>
+
+            <!-- 海洋區域：頂部有波浪、左右延伸到邊緣 -->
+            <path d="M200,60
+                     q10,-6 20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0
+                     L360,168 L200,168 Z"
+                  fill="url(#oceanWater)" stroke="#7A4818" stroke-width="1.5"/>
+
+            <!-- 第二層浪紋 -->
+            <path d="M200,72 q10,-3 20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0"
+                  fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".5"/>
+            <path d="M200,82 q10,-3 20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0"
+                  fill="none" stroke="#FFFFFF" stroke-width="1" opacity=".3"/>
+
+            <!-- 很多小魚 -->
+            <g fill="#FBF9F3">
+              <ellipse cx="220" cy="100" rx="4" ry="2"/>
+              <path d="M216,100 l-3,-2 l0,4 z"/>
+              <ellipse cx="248" cy="115" rx="4" ry="2"/>
+              <path d="M244,115 l-3,-2 l0,4 z"/>
+              <ellipse cx="268" cy="98"  rx="4" ry="2"/>
+              <path d="M264,98 l-3,-2 l0,4 z"/>
+              <ellipse cx="305" cy="108" rx="4" ry="2"/>
+              <path d="M301,108 l-3,-2 l0,4 z"/>
+              <ellipse cx="328" cy="120" rx="4" ry="2"/>
+              <path d="M324,120 l-3,-2 l0,4 z"/>
+              <ellipse cx="345" cy="100" rx="4" ry="2"/>
+              <path d="M341,100 l-3,-2 l0,4 z"/>
+              <ellipse cx="232" cy="135" rx="4" ry="2"/>
+              <path d="M228,135 l-3,-2 l0,4 z"/>
+              <ellipse cx="262" cy="148" rx="4" ry="2"/>
+              <path d="M258,148 l-3,-2 l0,4 z"/>
+              <ellipse cx="295" cy="140" rx="4" ry="2"/>
+              <path d="M291,140 l-3,-2 l0,4 z"/>
+              <ellipse cx="335" cy="148" rx="4" ry="2"/>
+              <path d="M331,148 l-3,-2 l0,4 z"/>
+            </g>
+
+            <!-- 大魚（在海裡顯得很小，沒有造成波動） -->
+            <g>
+              <ellipse cx="280" cy="125" rx="14" ry="6" fill="#2C2018"/>
+              <path d="M266,125 l-8,-5 l0,10 z" fill="#2C2018"/>
+              <circle cx="286" cy="123" r="1.5" fill="#FFF"/>
+            </g>
+
+            <text x="280" y="190" text-anchor="middle" fill="#7A4818" font-size="11" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">大魚進來</text>
+            <text x="280" y="206" text-anchor="middle" fill="#7A4818" font-size="11" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">水面也不會晃</text>
+          </g>
+
+          <!-- 中間 VS -->
+          <text x="180" y="125" text-anchor="middle" fill="#8A7A66" font-size="13" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">VS</text>
+
+          <!-- bottom caption -->
+          <text x="180" y="240" text-anchor="middle" fill="#8A7A66" font-size="11" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">市場越大，價格越不容易被少數人推動</text>
+        </svg>
+        <div class="cap">圖 2 · 魚缸 vs 大海</div>
+      </div>
+
+      <div class="card">
+        <p>美股和台股都是股票，但實際交易起來，差別其實滿多的：</p>
+        <ul>
+          <li><strong>沒有漲跌停限制</strong>：價格能完整反映市場真實的供需，不會因為漲跌停被「卡住」。</li>
+          <li><strong>市場大、深度夠</strong>：美股像深水大海，大資金進出不容易撼動價格；台股屬於淺碟市場，大戶一動，散戶常常被波及。</li>
+          <li><strong>交易時間在台灣晚上</strong>：美股盤中對應的是台灣時間的晚上 9 點半到隔天清晨。白天上班的人不需要邊開會邊看盤。</li>
+          <li><strong>趨勢相對一致</strong>：美股盤面比較少被單一事件、單一主力影響，趨勢的形成和延續通常更乾淨。</li>
+          <li><strong>產業選擇豐富很多</strong>：從半導體、雲端、AI、消費品牌到生技、能源、金融，幾乎所有產業的世界級公司都在美股。</li>
+          <li><strong>大盤更分散、更穩健</strong>：S&amp;P 500 涵蓋的是 500 家不同產業的龍頭，長期投資的安全邊際比集中在科技股的台股大盤更高。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3 ============ -->
+  <section>
+    <span class="sec-num">CHAPTER 03</span>
+    <h2 class="sec-title">複委託的優勢</h2>
+
+    <div class="row">
+      <div class="figure">
+        <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" aria-label="複委託的三大優勢">
+          <!-- Panel 1: 操作面 -->
+          <g>
+            <rect x="8" y="8" width="344" height="80" rx="12" fill="#FBF9F3" stroke="#E0DBCF" stroke-width="1"/>
+            <!-- icon: hand on phone -->
+            <g transform="translate(28,22)">
+              <rect x="6" y="0" width="32" height="48" rx="5" fill="none" stroke="#7A4818" stroke-width="2.5"/>
+              <rect x="10" y="6" width="24" height="32" rx="1" fill="#F4E4D0"/>
+              <circle cx="22" cy="43" r="2" fill="#7A4818"/>
+              <!-- check mark on screen -->
+              <path d="M16,22 l4,4 l8,-8" fill="none" stroke="#7A4818" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <text x="100" y="38" fill="#2C2018" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">操作面</text>
+            <text x="100" y="58" fill="#6B5438" font-size="11.5" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">熟悉的介面、熟悉的客服</text>
+            <text x="100" y="74" fill="#6B5438" font-size="11.5" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">不用學新平台、不用面對英文</text>
+          </g>
+
+          <!-- Panel 2: 門檻面 -->
+          <g>
+            <rect x="8" y="100" width="344" height="80" rx="12" fill="#FBF9F3" stroke="#E0DBCF" stroke-width="1"/>
+            <!-- icon: small coins growing -->
+            <g transform="translate(22,116)">
+              <circle cx="10" cy="40" r="9" fill="#F4E4D0" stroke="#7A4818" stroke-width="2"/>
+              <circle cx="26" cy="32" r="11" fill="#F4E4D0" stroke="#7A4818" stroke-width="2"/>
+              <circle cx="44" cy="22" r="13" fill="#F4E4D0" stroke="#7A4818" stroke-width="2"/>
+              <text x="10" y="44" text-anchor="middle" fill="#7A4818" font-size="10" font-weight="700">$</text>
+              <text x="26" y="36" text-anchor="middle" fill="#7A4818" font-size="11" font-weight="700">$</text>
+              <text x="44" y="27" text-anchor="middle" fill="#7A4818" font-size="13" font-weight="700">$</text>
+            </g>
+            <text x="100" y="130" fill="#2C2018" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">門檻面</text>
+            <text x="100" y="150" fill="#6B5438" font-size="11.5" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">支援定期定額、零股買進</text>
+            <text x="100" y="166" fill="#6B5438" font-size="11.5" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">小資金也能持有蘋果、微軟</text>
+          </g>
+
+          <!-- Panel 3: 配置面 -->
+          <g>
+            <rect x="8" y="192" width="344" height="80" rx="12" fill="#FBF9F3" stroke="#E0DBCF" stroke-width="1"/>
+            <!-- icon: pie chart -->
+            <g transform="translate(28,210)">
+              <circle cx="22" cy="22" r="20" fill="none" stroke="#7A4818" stroke-width="2.5"/>
+              <path d="M22,22 L22,2 A20,20 0 0,1 39.3,32 Z" fill="#B8763A"/>
+              <path d="M22,22 L39.3,32 A20,20 0 0,1 8,36 Z" fill="#F4E4D0"/>
+              <path d="M22,22 L8,36 A20,20 0 0,1 22,2 Z" fill="#7A4818"/>
+            </g>
+            <text x="100" y="222" fill="#2C2018" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">資產配置面</text>
+            <text x="100" y="242" fill="#6B5438" font-size="11.5" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">分散台股集中風險、多一層美元資產</text>
+            <text x="100" y="258" fill="#6B5438" font-size="11.5" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">投資台灣較少見的產業類別</text>
+          </g>
+        </svg>
+        <div class="cap">圖 3 · 複委託的三個優勢面向</div>
+      </div>
+
+      <div class="card">
+        <h4>操作面</h4>
+        <ul>
+          <li><strong>跟買台股一樣的流程</strong>：同一個 App、同一套帳戶，不用學新平台。</li>
+          <li><strong>資金留在台灣券商</strong>：受台灣金管會監管，不用擔心海外平台跑路或結算風險。</li>
+          <li><strong>有專員可以找</strong>：出問題能用中文溝通，不用半夜跟外國客服筆戰。</li>
+          <li><strong>沒有跨國匯款的隱形成本</strong>：自己開海外券商，每次匯出、匯回都要被收電匯費和郵電費。複委託直接省下這筆。</li>
+        </ul>
+
+        <h4>門檻面</h4>
+        <ul>
+          <li><strong>支援定期定額</strong>：小資金也能每個月固定買進。</li>
+          <li><strong>支援零股</strong>：不必一次買滿一股。Berkshire Hathaway 一股要好幾十萬美金，零股讓你也能持有。</li>
+        </ul>
+
+        <h4>資產配置面</h4>
+        <ul>
+          <li><strong>分散台股的集中風險</strong>：台股科技股占比過高，押在單一市場其實是壓在單一產業上。</li>
+          <li><strong>多一層美元資產</strong>：台幣以外的部位，本身就是一種天然避險。</li>
+          <li><strong>接觸台灣較少見的產業</strong>：消費品牌、雲端服務、生技、能源這類在台股很難找到代表標的的板塊。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4 ============ -->
+  <section>
+    <span class="sec-num">CHAPTER 04</span>
+    <h2 class="sec-title">複委託適合誰？</h2>
+
+    <div class="row flip">
+      <div class="figure">
+        <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" aria-label="適合複委託的六種人">
+          <defs>
+            <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FBF9F3"/>
+              <stop offset="1" stop-color="#F4E4D0"/>
+            </linearGradient>
+          </defs>
+
+          <!-- 6 persona cards in 2 columns x 3 rows -->
+          <!-- Row 1 -->
+          <g>
+            <rect x="14" y="14" width="158" height="68" rx="10" fill="url(#pg)" stroke="#E0DBCF" stroke-width="1"/>
+            <circle cx="42" cy="48" r="16" fill="#7A4818"/>
+            <text x="42" y="52" text-anchor="middle" fill="#F5EFE2" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">忙</text>
+            <text x="70" y="44" fill="#2C2018" font-size="11.5" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">上班族</text>
+            <text x="70" y="60" fill="#6B5438" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">沒時間盯盤</text>
+          </g>
+          <g>
+            <rect x="188" y="14" width="158" height="68" rx="10" fill="url(#pg)" stroke="#E0DBCF" stroke-width="1"/>
+            <circle cx="216" cy="48" r="16" fill="#7A4818"/>
+            <text x="216" y="52" text-anchor="middle" fill="#F5EFE2" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">分</text>
+            <text x="244" y="44" fill="#2C2018" font-size="11.5" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">想分散風險的人</text>
+            <text x="244" y="60" fill="#6B5438" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">不只壓在台股</text>
+          </g>
+
+          <!-- Row 2 -->
+          <g>
+            <rect x="14" y="98" width="158" height="68" rx="10" fill="url(#pg)" stroke="#E0DBCF" stroke-width="1"/>
+            <circle cx="42" cy="132" r="16" fill="#7A4818"/>
+            <text x="42" y="136" text-anchor="middle" fill="#F5EFE2" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">省</text>
+            <text x="70" y="128" fill="#2C2018" font-size="11.5" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">怕麻煩的人</text>
+            <text x="70" y="144" fill="#6B5438" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">不想處理匯款換匯</text>
+          </g>
+          <g>
+            <rect x="188" y="98" width="158" height="68" rx="10" fill="url(#pg)" stroke="#E0DBCF" stroke-width="1"/>
+            <circle cx="216" cy="132" r="16" fill="#7A4818"/>
+            <text x="216" y="136" text-anchor="middle" fill="#F5EFE2" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">中</text>
+            <text x="244" y="128" fill="#2C2018" font-size="11.5" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">習慣中文介面</text>
+            <text x="244" y="144" fill="#6B5438" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">不想面對英文平台</text>
+          </g>
+
+          <!-- Row 3 -->
+          <g>
+            <rect x="14" y="182" width="158" height="68" rx="10" fill="url(#pg)" stroke="#E0DBCF" stroke-width="1"/>
+            <circle cx="42" cy="216" r="16" fill="#7A4818"/>
+            <text x="42" y="220" text-anchor="middle" fill="#F5EFE2" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">安</text>
+            <text x="70" y="212" fill="#2C2018" font-size="11.5" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">注重帳戶安全</text>
+            <text x="70" y="228" fill="#6B5438" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">資金留在台灣監管</text>
+          </g>
+          <g>
+            <rect x="188" y="182" width="158" height="68" rx="10" fill="url(#pg)" stroke="#E0DBCF" stroke-width="1"/>
+            <circle cx="216" cy="216" r="16" fill="#7A4818"/>
+            <text x="216" y="220" text-anchor="middle" fill="#F5EFE2" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">小</text>
+            <text x="244" y="212" fill="#2C2018" font-size="11.5" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">小資族</text>
+            <text x="244" y="228" fill="#6B5438" font-size="10" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei">小金額也能參與美股</text>
+          </g>
+        </svg>
+        <div class="cap">圖 4 · 六種特別適合的人</div>
+      </div>
+
+      <div class="card">
+        <p>如果你符合下面任何一點，複委託很可能就是你在找的工具：</p>
+        <ul>
+          <li><strong>白天上班、沒時間盯盤的人</strong>：美股盤中是台灣時間晚上，下班後再開盤。</li>
+          <li><strong>想分散台股風險，但不想另開海外帳戶的人</strong>：用最低的麻煩程度，把資產分一部分到全世界最大的市場。</li>
+          <li><strong>不想自己處理匯款、換匯手續的人</strong>：複委託全部在台灣端搞定，券商會幫你處理。</li>
+          <li><strong>習慣中文介面、不想面對英文平台的人</strong>：操作、對帳單、客服全是中文。</li>
+          <li><strong>注重帳戶安全的人</strong>：資金留在台灣，受金管會監管。</li>
+          <li><strong>小資族</strong>：定期定額和零股機制，讓幾千塊也能買到世界級公司的股份。</li>
+        </ul>
+        <div class="pq">複委託最大的價值，是讓「投資美股」這件事，從遙遠變成順手。</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>本內容為投資觀念教育，不構成任何投資建議。</p>
+    <p>市場有風險，所有投資決策請依個人狀況審慎評估。</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
