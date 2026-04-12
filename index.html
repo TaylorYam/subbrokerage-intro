@@ -6,6 +6,10 @@
 <meta name="theme-color" content="#2C2018">
 <meta name="format-detection" content="telephone=no">
 <title>什麼是複委託？ — 從零認識美股投資</title>
+<meta name="description" content="不用開海外帳戶，在台灣的券商就能買蘋果、微軟、Google。用最白話的方式，帶你認識複委託。">
+<meta property="og:title" content="什麼是複委託？ — 從零認識美股投資">
+<meta property="og:description" content="不用開海外帳戶，在台灣的券商就能買蘋果、微軟、Google。">
+<meta property="og:type" content="article">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -71,7 +75,7 @@
   }
   .hero h1{
     margin:0 0 10px;
-    font-size:30px;line-height:1.25;font-weight:900;letter-spacing:.02em;
+    font-size:34px;line-height:1.25;font-weight:900;letter-spacing:.02em;
   }
   .hero .sub{
     margin:0;
@@ -201,12 +205,49 @@
   }
   footer p{margin:4px 0;}
 
+  /* ===== Closing ===== */
+  .closing{
+    margin-top:46px;
+    padding:28px 22px;
+    text-align:center;
+  }
+  .closing .closing-line{
+    font-size:18px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.7;
+    margin:0 0 10px;
+  }
+  .closing .closing-sub{
+    font-size:15px;
+    color:var(--muted);
+    margin:0;
+    line-height:1.8;
+  }
+
+  /* ===== Progress bar ===== */
+  .progress{
+    position:fixed;top:0;left:0;
+    width:0%;height:3px;
+    background:var(--accent);
+    z-index:999;
+    transition:width .15s ease-out;
+  }
+
+  /* ===== Tablet (600–899px) ===== */
+  @media (min-width:600px) and (max-width:899px){
+    .wrap{max-width:640px;}
+  }
+
   ::selection{background:var(--accent);color:#fff;}
+
+  /* ===== Chapter nav dots (desktop only) ===== */
+  .chapter-nav{display:none;}
 
   /* ===== Desktop: full-page snap deck (real mouse + wide viewport only) ===== */
   @media (min-width:900px) and (hover:hover) and (pointer:fine){
     html{
-      scroll-snap-type: y mandatory;
+      scroll-snap-type: y proximity;
       scroll-behavior: smooth;
     }
     body{font-size:18px;line-height:1.8;}
@@ -216,13 +257,11 @@
       padding:0;
     }
 
-    /* Every snap target = full screen */
+    /* Snap targets */
     .hero,
-    .intro,
     section{
       min-height:100vh;
       scroll-snap-align:start;
-      scroll-snap-stop:always;
       box-sizing:border-box;
       margin:0;
       display:flex;
@@ -234,7 +273,7 @@
     /* ===== Hero ===== */
     .hero{
       border-radius:0;
-      padding:96px 64px;
+      padding:96px 64px 56px;
     }
     .hero > *{
       max-width:1040px;
@@ -248,23 +287,30 @@
     .hero .meta{margin-top:34px;font-size:14px;gap:12px;}
     .hero .meta span{padding:7px 14px;}
 
-    /* ===== Intro ===== */
+    /* ===== Intro: merged into hero flow, not a snap target ===== */
     .intro{
+      min-height:auto;
       background:transparent;
       border:none;
       box-shadow:none;
       border-radius:0;
-      align-items:center;
-      text-align:center;
-      padding:96px 64px;
+      padding:0 64px 96px;
+      margin:0;
     }
     .intro p{
-      max-width:820px;
+      max-width:1040px;
       margin:0 auto;
-      font-size:28px;
+      font-size:22px;
       line-height:1.75;
-      color:var(--ink);
+      color:#D8C8AA;
       font-weight:500;
+    }
+    .intro strong{color:#F5EFE2;}
+    /* Visually attach intro to hero's dark background */
+    .intro{
+      background:
+        radial-gradient(120% 80% at 80% 0%, rgba(184,118,58,.18), transparent 60%),
+        linear-gradient(180deg,#4A3624 0%,#5A4A34 40%,var(--bg) 100%);
     }
 
     /* ===== Section ===== */
@@ -308,23 +354,56 @@
     }
     .figure .cap{margin-top:16px;font-size:13px;}
 
-    /* Text card - constrained height with internal scroll */
+    /* Text card - natural height, no nested scroll */
     .card{
-      max-height:74vh;
-      overflow-y:auto;
       padding:26px 32px 28px;
-      padding-right:18px;
       border-radius:14px;
       margin:0;
-      scrollbar-width:thin;
-      scrollbar-color:#C9B89A transparent;
     }
-    .card::-webkit-scrollbar{width:6px;}
-    .card::-webkit-scrollbar-thumb{background:#C9B89A;border-radius:3px;}
     .card p{font-size:17px;line-height:1.8;margin-bottom:10px;}
     .card ul li{font-size:16.5px;line-height:1.75;padding:7px 0 7px 22px;}
     .card h4{font-size:16px;margin:14px 0 4px;}
     .pq{font-size:15.5px;padding:10px 14px;}
+
+    /* ===== Chapter nav dots ===== */
+    .chapter-nav{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      position:fixed;
+      right:28px;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:100;
+    }
+    .chapter-nav a{
+      display:block;
+      width:10px;height:10px;
+      border-radius:50%;
+      background:var(--line-2);
+      transition:background .25s,transform .25s;
+      position:relative;
+    }
+    .chapter-nav a:hover,
+    .chapter-nav a.active{
+      background:var(--accent);
+      transform:scale(1.35);
+    }
+    .chapter-nav a .tip{
+      position:absolute;
+      right:22px;top:50%;transform:translateY(-50%);
+      white-space:nowrap;
+      font-size:13px;
+      color:var(--ink);
+      background:var(--paper);
+      padding:4px 10px;
+      border-radius:6px;
+      box-shadow:0 2px 8px rgba(0,0,0,.1);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s;
+    }
+    .chapter-nav a:hover .tip{opacity:1;}
 
     /* Footer doesn't snap */
     footer{
@@ -334,18 +413,26 @@
       margin-top:0;
       border-top:1px solid var(--line-2);
     }
+
+    /* Closing section */
+    .closing{
+      min-height:auto;
+      scroll-snap-align:none;
+      padding:64px 64px 40px;
+    }
   }
 </style>
 </head>
 <body>
 
+<div class="progress" id="progress"></div>
 <div class="wrap">
 
   <!-- ============ HERO ============ -->
   <header class="hero">
     <span class="badge">Taylor · 投資觀念教學</span>
-    <h1>什麼是複委託？<br>從零認識美股投資</h1>
-    <p class="sub">不用開海外帳戶、不用面對英文介面，<br>在台灣的券商就能買蘋果、微軟、Google。</p>
+    <h1>什麼是複委託？ 從零認識美股投資</h1>
+    <p class="sub">不用開海外帳戶、不用面對英文介面，在台灣的券商就能買蘋果、微軟、Google。</p>
     <div class="meta">
       <span>共 4 個章節</span>
       <span>白話入門</span>
@@ -590,6 +677,7 @@
           <li><strong>產業選擇豐富很多</strong>：從半導體、雲端、AI、消費品牌到生技、能源、金融，幾乎所有產業的世界級公司都在美股。</li>
           <li><strong>大盤更分散、更穩健</strong>：S&amp;P 500 涵蓋的是 500 家不同產業的龍頭，長期投資的安全邊際比集中在科技股的台股大盤更高。</li>
         </ul>
+        <div class="pq">台股是魚缸，美股是大海——同樣的浪，影響完全不同。</div>
       </div>
     </div>
   </section>
@@ -654,27 +742,34 @@
         <div class="cap">圖 3 · 複委託的三個優勢面向</div>
       </div>
 
-      <div class="card">
-        <h4>操作面</h4>
-        <ul>
-          <li><strong>跟買台股一樣的流程</strong>：同一個 App、同一套帳戶，不用學新平台。</li>
-          <li><strong>資金留在台灣券商</strong>：受台灣金管會監管，不用擔心海外平台跑路或結算風險。</li>
-          <li><strong>有專員可以找</strong>：出問題能用中文溝通，不用半夜跟外國客服筆戰。</li>
-          <li><strong>沒有跨國匯款的隱形成本</strong>：自己開海外券商，每次匯出、匯回都要被收電匯費和郵電費。複委託直接省下這筆。</li>
-        </ul>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="card">
+          <h4>操作面</h4>
+          <ul>
+            <li><strong>跟買台股一樣的流程</strong>：同一個 App、同一套帳戶，不用學新平台。</li>
+            <li><strong>資金留在台灣券商</strong>：受台灣金管會監管，不用擔心海外平台跑路或結算風險。</li>
+            <li><strong>有專員可以找</strong>：出問題能用中文溝通，不用半夜跟外國客服筆戰。</li>
+            <li><strong>沒有跨國匯款的隱形成本</strong>：自己開海外券商，每次匯出、匯回都要被收電匯費和郵電費。複委託直接省下這筆。</li>
+          </ul>
+        </div>
 
-        <h4>門檻面</h4>
-        <ul>
-          <li><strong>支援定期定額</strong>：小資金也能每個月固定買進。</li>
-          <li><strong>支援零股</strong>：不必一次買滿一股。Berkshire Hathaway 一股要好幾十萬美金，零股讓你也能持有。</li>
-        </ul>
+        <div class="card">
+          <h4>門檻面</h4>
+          <ul>
+            <li><strong>支援定期定額</strong>：小資金也能每個月固定買進。</li>
+            <li><strong>支援零股</strong>：不必一次買滿一股。Berkshire Hathaway 一股要好幾十萬美金，零股讓你也能持有。</li>
+          </ul>
+        </div>
 
-        <h4>資產配置面</h4>
-        <ul>
-          <li><strong>分散台股的集中風險</strong>：台股科技股占比過高，押在單一市場其實是壓在單一產業上。</li>
-          <li><strong>多一層美元資產</strong>：台幣以外的部位，本身就是一種天然避險。</li>
-          <li><strong>接觸台灣較少見的產業</strong>：消費品牌、雲端服務、生技、能源這類在台股很難找到代表標的的板塊。</li>
-        </ul>
+        <div class="card">
+          <h4>資產配置面</h4>
+          <ul>
+            <li><strong>分散台股的集中風險</strong>：台股科技股占比過高，押在單一市場其實是壓在單一產業上。</li>
+            <li><strong>多一層美元資產</strong>：台幣以外的部位，本身就是一種天然避險。</li>
+            <li><strong>接觸台灣較少見的產業</strong>：消費品牌、雲端服務、生技、能源這類在台股很難找到代表標的的板塊。</li>
+          </ul>
+          <div class="pq">用最低的門檻，參與全世界最大的資本市場。</div>
+        </div>
       </div>
     </div>
   </section>
@@ -762,12 +857,58 @@
     </div>
   </section>
 
+  <div class="closing">
+    <p class="closing-line">看到這裡，你已經掌握了複委託的核心觀念。</p>
+    <p class="closing-sub">有任何問題，直接在 LINE 上傳訊息給我就好，不用客氣。</p>
+  </div>
+
   <footer>
     <p>本內容為投資觀念教育，不構成任何投資建議。</p>
     <p>市場有風險，所有投資決策請依個人狀況審慎評估。</p>
   </footer>
 
 </div>
+
+<!-- Chapter nav dots (desktop only, rendered via CSS) -->
+<nav class="chapter-nav" aria-label="章節導航">
+  <a href="#ch-hero" data-i="0"><span class="tip">首頁</span></a>
+  <a href="#ch-1" data-i="1"><span class="tip">什麼是複委託</span></a>
+  <a href="#ch-2" data-i="2"><span class="tip">跟台股的差異</span></a>
+  <a href="#ch-3" data-i="3"><span class="tip">複委託優勢</span></a>
+  <a href="#ch-4" data-i="4"><span class="tip">適合誰</span></a>
+</nav>
+
+<script>
+(function(){
+  // Progress bar
+  var bar=document.getElementById('progress');
+  if(bar){
+    window.addEventListener('scroll',function(){
+      var h=document.documentElement.scrollHeight-window.innerHeight;
+      bar.style.width=h>0?(window.scrollY/h*100)+'%':'0%';
+    },{passive:true});
+  }
+
+  // Chapter nav dots
+  var ids=['ch-hero','ch-1','ch-2','ch-3','ch-4'];
+  var targets=document.querySelectorAll('.hero, section');
+  targets.forEach(function(el,i){if(ids[i])el.id=ids[i];});
+
+  var dots=document.querySelectorAll('.chapter-nav a');
+  if(!dots.length)return;
+  var ob=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var id=e.target.id;
+        dots.forEach(function(d){
+          d.classList.toggle('active',d.getAttribute('href')==='#'+id);
+        });
+      }
+    });
+  },{threshold:0.4});
+  targets.forEach(function(el){ob.observe(el);});
+})();
+</script>
 
 </body>
 </html>
